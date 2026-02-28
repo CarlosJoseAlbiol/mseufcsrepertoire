@@ -25,9 +25,10 @@
   --medium: #e8a84c;
   --hard:   #f85149;
 
-  --s-practiced:     #3fb950;
-  --s-not-practiced: #f85149;
-  --s-assessed:      #c9a84c;
+  --s-rehearsed:        #3fb950;
+  --s-not-rehearsed:    #f85149;
+  --s-to-be-rehearsed:  #ffc107;
+  --s-assessed:         #c9a84c;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -108,8 +109,9 @@ header {
   display: inline-grid; place-items: center;
   font-size: .82rem; font-weight: 700; cursor: default;
 }
-.s-practiced     { background: rgba(63,185,80,.2);  color: var(--s-practiced); border: 1px solid var(--s-practiced); }
-.s-not-practiced { background: rgba(248,81,73,.2);  color: var(--s-not-practiced); border: 1px solid var(--s-not-practiced); }
+.s-rehearsed     { background: rgba(63,185,80,.2);  color: var(--s-rehearsed); border: 1px solid var(--s-rehearsed); }
+.s-not-rehearsed { background: rgba(248,81,73,.2);  color: var(--s-not-rehearsed); border: 1px solid var(--s-not-rehearsed); }
+.s-to-be-rehearsed { background: rgba(255,193,7,.18); color: var(--s-to-be-rehearsed); border: 1px solid var(--s-to-be-rehearsed); }
 .s-assessed      { background: rgba(201,168,76,.2); color: var(--s-assessed); border: 1px solid var(--s-assessed); }
 .s-none          { background: rgba(90,21,32,.3);   color: var(--muted); border: 1px solid var(--border); }
 
@@ -220,15 +222,20 @@ select option { background: var(--card); }
 }
 .status-toggle:hover { border-color: var(--gold); transform: scale(1.08); }
 
-.status-toggle.active-practiced {
-  background: rgba(63,185,80,.2); color: var(--s-practiced);
-  border-color: var(--s-practiced);
+.status-toggle.active-rehearsed {
+  background: rgba(63,185,80,.2); color: var(--s-rehearsed);
+  border-color: var(--s-rehearsed);
   box-shadow: 0 0 10px rgba(63,185,80,.25);
 }
-.status-toggle.active-not-practiced {
-  background: rgba(248,81,73,.2); color: var(--s-not-practiced);
-  border-color: var(--s-not-practiced);
+.status-toggle.active-not-rehearsed {
+  background: rgba(248,81,73,.2); color: var(--s-not-rehearsed);
+  border-color: var(--s-not-rehearsed);
   box-shadow: 0 0 10px rgba(248,81,73,.2);
+}
+.status-toggle.active-to-be-rehearsed {
+  background: rgba(255,193,7,.18); color: var(--s-to-be-rehearsed);
+  border-color: var(--s-to-be-rehearsed);
+  box-shadow: 0 0 10px rgba(255,193,7,.22);
 }
 .status-toggle.active-assessed {
   background: rgba(201,168,76,.2); color: var(--s-assessed);
