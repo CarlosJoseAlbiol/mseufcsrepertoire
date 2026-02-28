@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSEUF Concert Singers – Song Repertoire Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="repertoire.css">
+</head>
+<body>
+
+<header>
+  <img class="logo-img" src="data:image/png;base64,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" alt="MSEUF Concert Singers">
+  <div class="header-text">
+    <h1>MSEUF Concert Singers</h1>
+    <p>Song Repertoire Tracker · Manuel S. Enverga University Foundation</p>
+  </div>
+  <div class="header-actions">
+    <div class="shared-badge">🌐 Shared — visible to all</div>
+    <button class="btn btn-gold btn-sm" onclick="openAddModal()">＋ Add Song</button>
+    <button class="btn btn-outline btn-sm" onclick="loadAll()">🔄 Refresh</button>
+  </div>
+</header>
+
+<!-- Legend -->
+<div class="legend-bar">
+  <div class="legend-item"><span class="status-btn s-practiced">✔</span> Practiced</div>
+  <div class="legend-item"><span class="status-btn s-not-practiced">✘</span> Not Practiced</div>
+  <div class="legend-item"><span class="status-btn s-assessed">◉</span> Sang for Assessment</div>
+  <div class="legend-item"><span class="status-btn s-none">—</span> No Status</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item diff-easy">● Easy</div>
+  <div class="legend-item diff-medium">● Medium</div>
+  <div class="legend-item diff-hard">● Hard</div>
+</div>
+
+<div class="container">
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs" id="cat-tabs">
+    <button class="cat-tab active" onclick="switchCat('BATCH')">BATCH</button>
+  </div>
+
+  <!-- Search + filter -->
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Search songs…" oninput="renderSongs()">
+    </div>
+    <select id="filter-diff" onchange="renderSongs()">
+      <option value="">All Difficulties</option>
+      <option value="EASY">Easy</option>
+      <option value="MEDIUM">Medium</option>
+      <option value="HARD">Hard</option>
+    </select>
+    <select id="filter-status" onchange="renderSongs()">
+      <option value="">All Statuses</option>
+      <option value="practiced">✔ Practiced</option>
+      <option value="not-practiced">✘ Not Practiced</option>
+      <option value="assessed">◉ Sang for Assessment</option>
+      <option value="none">— No Status</option>
+    </select>
+    <div class="stats-bar" id="stats-bar"></div>
+  </div>
+
+  <div id="song-grid"></div>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="song-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Add Song</div>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="m-title">Song Title</label>
+        <input type="text" id="m-title" placeholder="e.g. Hallelujah">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        <div class="form-group">
+          <label for="m-category">Category</label>
+          <select id="m-category">
+            <option value="BATCH">BATCH</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="m-diff">Difficulty</label>
+          <select id="m-diff">
+            <option value="EASY">Easy</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HARD">Hard</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label for="m-solo">Solo / Descant</label>
+        <select id="m-solo">
+          <option value="NONE">None</option>
+          <option value="SOLO">Solo</option>
+          <option value="DESCANT">Descant</option>
+        </select>
+      </div>
+      <input type="hidden" id="m-edit-id">
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-gold" id="m-save-btn" onclick="saveSongModal()">💾 Save Song</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <div class="modal-title">🗑 Delete Song</div>
+      <button class="close-btn" onclick="closeDeleteModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:18px;color:var(--text);font-size:.9rem">Are you sure you want to delete <strong id="delete-song-name" style="color:var(--gold-light)"></strong>? This cannot be undone.</p>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+        <button class="btn btn-danger" id="confirm-delete-btn" onclick="confirmDelete()">🗑 Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const SONGS_DB = {
+  "BATCH": {
+    "EASY": [
+      {
+        "title": "Now That I Have You",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_EASY_0"
+      },
+      {
+        "title": "Ikaw Lamang",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_EASY_1"
+      },
+      {
+        "title": "L'Important C'est La Rose",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_EASY_2"
+      },
+      {
+        "title": "Ave Verum Corpus",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_3"
+      },
+      {
+        "title": "Viri Galilaei",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_4"
+      },
+      {
+        "title": "Manila, Manila",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_5"
+      },
+      {
+        "title": "Rosas Pandan",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_EASY_6"
+      },
+      {
+        "title": "Kalesa",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_EASY_7"
+      },
+      {
+        "title": "Above All Else",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_8"
+      },
+      {
+        "title": "One Thing I Ask",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_9"
+      },
+      {
+        "title": "Bibingka",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_EASY_10"
+      },
+      {
+        "title": "Til I Met You",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_11"
+      },
+      {
+        "title": "Leron, Leron Sinta",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_12"
+      },
+      {
+        "title": "Dahil Sa Iyo",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_13"
+      },
+      {
+        "title": "Simbang Gabi",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_EASY_14"
+      },
+      {
+        "title": "Bonse Aba",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_15"
+      },
+      {
+        "title": "Izzar Ederak",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_16"
+      },
+      {
+        "title": "Noypi",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_17"
+      },
+      {
+        "title": "Why We Sing",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_18"
+      },
+      {
+        "title": "For Good",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_EASY_19"
+      },
+      {
+        "title": "Na'ay",
+        "solo": "NONE",
+        "id": "builtin_BATCH_EASY_20"
+      }
+    ],
+    "MEDIUM": [
+      {
+        "title": "Kruhay",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_MEDIUM_0"
+      },
+      {
+        "title": "Chua-ay",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_MEDIUM_1"
+      },
+      {
+        "title": "Exultate Justi In Domino",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_2"
+      },
+      {
+        "title": "Namamasko",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_MEDIUM_3"
+      },
+      {
+        "title": "Gaano Ko Ikaw Kamahal",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_4"
+      },
+      {
+        "title": "Nais Ko",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_5"
+      },
+      {
+        "title": "Cebuano Medley",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_MEDIUM_6"
+      },
+      {
+        "title": "Pangarap Ko ang Ibigin ka",
+        "solo": "DESCANT",
+        "id": "builtin_BATCH_MEDIUM_7"
+      },
+      {
+        "title": "Bahay",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_8"
+      },
+      {
+        "title": "Kay Ganda ng Ating Musika",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_9"
+      },
+      {
+        "title": "Minsan ang Minahal ay Ako",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_MEDIUM_10"
+      },
+      {
+        "title": "Sa Mahal Kong Bayan",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_11"
+      },
+      {
+        "title": "Rosita De Un Verde Palmar",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_12"
+      },
+      {
+        "title": "The Majesty and Glory of Your Name",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_13"
+      },
+      {
+        "title": "Abba Gold",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_14"
+      },
+      {
+        "title": "Bagani",
+        "solo": "NONE",
+        "id": "builtin_BATCH_MEDIUM_15"
+      }
+    ],
+    "HARD": [
+      {
+        "title": "Kaisa-isa Niyan",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_0"
+      },
+      {
+        "title": "Padayon",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_HARD_1"
+      },
+      {
+        "title": "Himig ng Hangin",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_2"
+      },
+      {
+        "title": "Three Kalinga Chants",
+        "solo": "SOLO",
+        "id": "builtin_BATCH_HARD_3"
+      },
+      {
+        "title": "Talismane",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_4"
+      },
+      {
+        "title": "Iisang Bangka",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_5"
+      },
+      {
+        "title": "Alleluia",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_6"
+      },
+      {
+        "title": "Bituing Walang Ningning",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_7"
+      },
+      {
+        "title": "Sana'y Wala Nang Wakas",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_8"
+      },
+      {
+        "title": "Piliin Mo Ang Pilipinas",
+        "solo": "NONE",
+        "id": "builtin_BATCH_HARD_9"
+      }
+    ]
+  }
+};
+</script>
+<script src="repertoire.js"></script>
+</body>
+</html>
