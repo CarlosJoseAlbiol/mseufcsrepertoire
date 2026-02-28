@@ -25,8 +25,9 @@
 
 <!-- Legend -->
 <div class="legend-bar">
-  <div class="legend-item"><span class="status-btn s-practiced">✔</span> Practiced</div>
-  <div class="legend-item"><span class="status-btn s-not-practiced">✘</span> Not Practiced</div>
+  <div class="legend-item"><span class="status-btn s-rehearsed">✔</span> Rehearsed</div>
+  <div class="legend-item"><span class="status-btn s-not-rehearsed">✘</span> Not Rehearsed</div>
+  <div class="legend-item"><span class="status-btn s-to-be-rehearsed">🔔</span> To Be Rehearsed</div>
   <div class="legend-item"><span class="status-btn s-assessed">◉</span> Sang for Assessment</div>
   <div class="legend-item"><span class="status-btn s-none">—</span> No Status</div>
   <div class="legend-sep"></div>
@@ -56,8 +57,9 @@
     </select>
     <select id="filter-status" onchange="renderSongs()">
       <option value="">All Statuses</option>
-      <option value="practiced">✔ Practiced</option>
-      <option value="not-practiced">✘ Not Practiced</option>
+      <option value="rehearsed">✔ Rehearsed</option>
+      <option value="not-rehearsed">✘ Not Rehearsed</option>
+      <option value="to-be-rehearsed">🔔 To Be Rehearsed</option>
       <option value="assessed">◉ Sang for Assessment</option>
       <option value="none">— No Status</option>
     </select>
