@@ -319,7 +319,7 @@ function renderSongs() {
                         <button class="action-btn edit-btn" onclick="openEditModal('${s.id}')" title="Edit song">✏</button>
                         <button class="action-btn del-btn"  onclick="openDeleteModal('${s.id}','${s.title.replace(/'/g,"\\\'")}')" title="Delete song">🗑</button>
                       </div>`
-                    : `<span style="font-size:.66rem;color:var(--border2);font-style:italic">built-in</span>`}
+                    : `<span style="font-size:.66rem;color:var(--gold);font-style:italic;font-weight:600">MSEUFCS</span>`}
                   </td>
                 </tr>`;
             }).join("")}
