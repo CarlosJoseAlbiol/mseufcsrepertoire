@@ -1,0 +1,14 @@
+{
+    "name": "MSEUF Concert Singers – Repertoire Tracker",
+    "short_name": "CS Repertoire",
+    "description": "Song repertoire tracker for MSEUF Concert Singers",
+    "start_url": "./repertoire.html",
+    "display": "standalone",
+    "background_color": "#2d0609",
+    "theme_color": "#6b0f1a",
+    "orientation": "portrait-primary",
+    "icons": [
+      { "src": "logo.png", "sizes": "192x192", "type": "image/png" },
+      { "src": "logo.png", "sizes": "512x512", "type": "image/png" }
+    ]
+  }
