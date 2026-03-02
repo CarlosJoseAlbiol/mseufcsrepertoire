@@ -300,25 +300,43 @@ select option { background: var(--card); }
   position: fixed; inset: 0; background: rgba(0,0,0,.82);
   display: none; place-items: center; z-index: 1000;
   padding: 16px; backdrop-filter: blur(6px);
+  overflow-y: auto;
 }
-.modal-overlay.open { display: grid; animation: fadeUp .2s ease; }
+.modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; animation: fadeUp .2s ease; }
 
 .modal {
   background: var(--card); border: 1px solid var(--border2);
   border-radius: 14px; width: 100%; max-width: 500px;
   box-shadow: 0 20px 60px rgba(0,0,0,.6);
   animation: fadeUp .22s ease;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 32px);
+  margin: auto;
 }
 
 .modal-header {
   padding: 16px 20px; border-bottom: 1px solid var(--border);
   display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
 }
 .modal-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.05rem; color: var(--gold-light);
 }
-.modal-body { padding: 20px; max-height: 75vh; overflow-y: auto; }
+.modal-body {
+  padding: 20px;
+  overflow-y: scroll;
+  flex: 1;
+  /* Visible scrollbar for laptop */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) var(--card2);
+}
+/* Webkit scrollbar (Chrome, Edge, Safari) */
+.modal-body::-webkit-scrollbar { width: 6px; }
+.modal-body::-webkit-scrollbar-track { background: var(--card2); border-radius: 3px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+.modal-body::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
+
 .close-btn {
   background: none; border: none; color: var(--muted);
   font-size: 1.2rem; cursor: pointer; line-height: 1;
