@@ -318,7 +318,7 @@ select option { background: var(--card); }
   font-family: 'Playfair Display', serif;
   font-size: 1.05rem; color: var(--gold-light);
 }
-.modal-body { padding: 20px; }
+.modal-body { padding: 20px; max-height: 75vh; overflow-y: auto; }
 .close-btn {
   background: none; border: none; color: var(--muted);
   font-size: 1.2rem; cursor: pointer; line-height: 1;
