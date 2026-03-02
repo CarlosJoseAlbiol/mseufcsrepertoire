@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ═══════════════════ AUTH ═══════════════════
 async function signOutApp() {
   await db.auth.signOut();
-  window.location.href = "login.html";
+  window.location.href = "https://carlosjosealbiol.github.io/mseufcsrepertoire/login.html";
 }
 
 async function loadUserInfo() {
@@ -331,3 +331,4 @@ async function loadUserInfo() {
 document.addEventListener("DOMContentLoaded", () => {
   loadUserInfo();
 });
+
