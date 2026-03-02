@@ -6,6 +6,20 @@
   <title>MSEUF Concert Singers – Song Repertoire Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ── Auth gate: redirect to login if not signed in ──
+    (async () => {
+      const _db = supabase.createClient(
+        "https://aevaojekkijhzlxthlpb.supabase.co",
+        "sb_publishable_B5ayfQIcgSAFmTYGE7ju2Q_4EDrigPo"
+      );
+      const { data: { session } } = await _db.auth.getSession();
+      if (!session) {
+        window.location.href = "login.html";
+      }
+    })();
+  </script>
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6b0f1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,6 +36,11 @@
   </div>
   <div class="header-actions">
     <div class="shared-badge">🌐 Shared — visible to all</div>
+    <div class="user-info" id="header-user" style="display:flex;align-items:center;gap:8px;background:rgba(201,168,76,.08);border:1px solid var(--border2);border-radius:20px;padding:4px 12px 4px 6px">
+      <img id="header-avatar" src="" alt="" style="width:26px;height:26px;border-radius:50%;border:1px solid var(--gold);display:none">
+      <span id="header-name" style="font-size:.78rem;color:var(--gold-light);font-weight:600"></span>
+      <button onclick="signOutApp()" style="background:none;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;padding:0 0 0 4px;" title="Sign out">✕</button>
+    </div>
     <button class="btn btn-gold btn-sm" onclick="openAddModal()">＋ Add Song</button>
     <button class="btn btn-notif btn-sm" id="notif-btn" onclick="openNotifModal()" title="Notifications &amp; Reminders">🔔 Reminders</button>
     <button class="btn btn-outline btn-sm" onclick="loadAll()">🔄 Refresh</button>
