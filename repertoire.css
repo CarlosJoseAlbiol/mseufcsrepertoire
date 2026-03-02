@@ -341,3 +341,80 @@ select option { background: var(--card); }
 }
 .btn-danger:hover { background: rgba(248,81,73,.25); }
 .btn-danger:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── NOTIFICATION BUTTON ── */
+.btn-notif {
+  background: linear-gradient(135deg, #3d0709, #6b0f1a);
+  border: 1px solid var(--gold);
+  color: var(--gold-light);
+  padding: 6px 13px;
+  border-radius: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 6px;
+  position: relative;
+}
+.btn-notif:hover { background: linear-gradient(135deg, #5a0e18, #8b1a28); }
+
+.bell-badge {
+  background: var(--gold); color: #2d0609;
+  border-radius: 50%; width: 18px; height: 18px;
+  font-size: .65rem; font-weight: 800;
+  display: inline-grid; place-items: center;
+}
+
+/* ── CALENDAR BUTTON ── */
+.btn-calendar {
+  background: rgba(201,168,76,.1);
+  border: 1px solid rgba(201,168,76,.35);
+  color: var(--gold-light);
+  padding: 7px 13px; border-radius: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-calendar:hover { background: rgba(201,168,76,.22); border-color: var(--gold); }
+.btn-calendar.btn-sm { padding: 5px 9px; font-size: .72rem; }
+
+/* ── NOTIFICATION MODAL SECTIONS ── */
+.notif-section { margin-bottom: 6px; }
+.notif-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: .95rem; color: var(--gold-light);
+  margin-bottom: 6px;
+}
+.notif-desc {
+  font-size: .78rem; color: var(--muted); line-height: 1.6;
+  margin-bottom: 8px;
+}
+.notif-divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 16px 0;
+}
+
+/* ── REMINDER CARDS ── */
+.reminder-card {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  border-radius: 10px; padding: 12px;
+  margin-bottom: 8px;
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 10px;
+  transition: border-color .2s;
+}
+.reminder-card:hover { border-color: var(--gold); }
+.reminder-card.past { opacity: .55; }
+
+.reminder-title {
+  font-weight: 600; color: var(--text);
+  font-size: .9rem; margin-bottom: 4px;
+}
+.reminder-meta {
+  font-size: .72rem; color: var(--muted); line-height: 1.8;
+}
+.reminder-notes {
+  font-size: .74rem; color: var(--muted);
+  margin-top: 4px; font-style: italic;
+}
