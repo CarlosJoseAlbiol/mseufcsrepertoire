@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MSEUF Concert Singers – Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --maroon-dark:  #2d0609;
+      --maroon:       #6b0f1a;
+      --maroon-mid:   #8b1a28;
+      --gold:         #c9a84c;
+      --gold-light:   #e8c97a;
+      --surface:      #1a0608;
+      --card:         #2a0c10;
+      --border:       #5a1520;
+      --border2:      #7a1f2e;
+      --text:         #f5e6d0;
+      --muted:        #b89080;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: var(--maroon-dark);
+      background-image: radial-gradient(ellipse at top, #5a0e18 0%, #2d0609 60%, #1a0306 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      padding: 16px;
+    }
+
+    /* Animated music notes background */
+    .bg-notes {
+      position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
+    }
+    .note {
+      position: absolute; font-size: 1.4rem; opacity: 0;
+      animation: floatNote 8s ease-in infinite;
+      color: rgba(201,168,76,.15);
+    }
+    @keyframes floatNote {
+      0%   { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+      10%  { opacity: 1; }
+      90%  { opacity: .5; }
+      100% { opacity: 0; transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    .login-card {
+      position: relative; z-index: 1;
+      background: linear-gradient(145deg, var(--card) 0%, #1e0709 100%);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(201,168,76,.08);
+      animation: fadeUp .4s ease;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+
+    .logo-wrap {
+      display: flex; flex-direction: column; align-items: center; margin-bottom: 28px;
+    }
+    .logo-img {
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 2px solid var(--gold);
+      object-fit: cover;
+      box-shadow: 0 0 28px rgba(201,168,76,.3);
+      margin-bottom: 14px;
+    }
+    .org-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; color: var(--gold-light);
+      text-align: center; line-height: 1.3;
+    }
+    .org-sub {
+      font-size: .72rem; color: var(--muted);
+      text-align: center; letter-spacing: .1em;
+      text-transform: uppercase; margin-top: 4px;
+    }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 24px 0;
+      color: var(--muted); font-size: .75rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      border-top: 1px solid var(--border2);
+    }
+
+    /* Social sign-in buttons */
+    .btn-social {
+      width: 100%; padding: 13px 20px;
+      border-radius: 10px; border: 1px solid var(--border2);
+      background: rgba(255,255,255,.04);
+      color: var(--text); font-family: 'DM Sans', sans-serif;
+      font-size: .92rem; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .btn-social:hover {
+      background: rgba(255,255,255,.09);
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.3);
+    }
+    .btn-social:active { transform: translateY(0); }
+    .btn-social svg { flex-shrink: 0; }
+
+    .btn-google { border-color: rgba(66,133,244,.4); }
+    .btn-google:hover { border-color: #4285F4; box-shadow: 0 6px 20px rgba(66,133,244,.2); }
+    .btn-apple  { border-color: rgba(255,255,255,.2); }
+    .btn-apple:hover  { border-color: rgba(255,255,255,.5); box-shadow: 0 6px 20px rgba(255,255,255,.1); }
+
+    .status-msg {
+      text-align: center; font-size: .82rem;
+      min-height: 22px; margin-top: 16px;
+      color: var(--muted); transition: all .3s;
+    }
+    .status-msg.error { color: #f85149; }
+    .status-msg.success { color: #3fb950; }
+    .status-msg.loading {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .spinner {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid var(--border2);
+      border-top-color: var(--gold);
+      animation: spin .7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .terms {
+      text-align: center; font-size: .68rem; color: var(--muted);
+      margin-top: 20px; line-height: 1.6;
+    }
+
+    /* Already logged in state */
+    .user-card {
+      display: none; text-align: center;
+    }
+    .user-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 2px solid var(--gold); margin: 0 auto 12px;
+    }
+    .user-name { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .user-email { font-size: .78rem; color: var(--muted); margin-bottom: 20px; }
+    .btn-enter {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: #2d0609; border: none; padding: 13px 28px;
+      border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: .95rem; font-weight: 700; cursor: pointer;
+      transition: all .2s; width: 100%; margin-bottom: 10px;
+    }
+    .btn-enter:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-signout {
+      background: none; border: 1px solid var(--border2);
+      color: var(--muted); padding: 10px 20px;
+      border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: .82rem; cursor: pointer; transition: all .2s; width: 100%;
+    }
+    .btn-signout:hover { border-color: #f85149; color: #f85149; }
+  </style>
+</head>
+<body>
+
+<!-- Floating music notes -->
+<div class="bg-notes" id="bg-notes"></div>
+
+<div class="login-card">
+  <div class="logo-wrap">
+    <img class="logo-img" src="data:image/png;base64,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" alt="MSEUF Concert Singers">
+    <div class="org-name">MSEUF Concert Singers</div>
+    <div class="org-sub">Song Repertoire Tracker</div>
+  </div>
+
+  <!-- Sign-in panel -->
+  <div id="signin-panel">
+    <div class="divider">Sign in to continue</div>
+
+    <button class="btn-social btn-google" onclick="signIn('google')">
+      <svg width="20" height="20" viewBox="0 0 48 48">
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.97 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <button class="btn-social btn-apple" onclick="signIn('apple')">
+      <svg width="20" height="20" viewBox="0 0 814 1000" fill="white">
+        <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 407.5 64.8 152.4 196.4 70.1c56.4-36.2 135.5-49.3 212.2-49.3 72.4 0 144.1 24.7 195.9 58.4 40.8 26.1 130.3 118.4 130.3 118.4l-146.3 48.2c-16.7-16.7-36.2-34-62.5-34-23.2 0-36.2 12.2-36.2 12.2l-27.1 198.6 39.5-39.5 173.5 173.5s13.4-50 13.4-74.7c0-98.2-68.1-145.7-68.1-145.7s38.2-22.4 99.1-22.4c60.4 0 98.2 17.3 98.2 17.3z"/>
+      </svg>
+      Continue with Apple
+    </button>
+
+    <div class="status-msg" id="status-msg">
+      <span class="spinner" id="spinner"></span>
+      <span id="status-text"></span>
+    </div>
+
+    <div class="terms">
+      By signing in, you agree to share your name and email<br>
+      with the MSEUF Concert Singers repertoire tracker.
+    </div>
+  </div>
+
+  <!-- Already logged in panel -->
+  <div class="user-card" id="user-card">
+    <img class="user-avatar" id="user-avatar" src="" alt="">
+    <div class="user-name" id="user-name"></div>
+    <div class="user-email" id="user-email"></div>
+    <button class="btn-enter" onclick="goToApp()">🎵 Open Repertoire Tracker</button>
+    <button class="btn-signout" onclick="signOut()">Sign out</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://aevaojekkijhzlxthlpb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_B5ayfQIcgSAFmTYGE7ju2Q_4EDrigPo";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── Floating notes animation ──
+const NOTES = ['♩','♪','♫','♬','𝅘𝅥𝅮','𝄞'];
+const bg = document.getElementById('bg-notes');
+for (let i = 0; i < 18; i++) {
+  const n = document.createElement('div');
+  n.className = 'note';
+  n.textContent = NOTES[Math.floor(Math.random() * NOTES.length)];
+  n.style.left  = Math.random() * 100 + '%';
+  n.style.animationDelay    = Math.random() * 8 + 's';
+  n.style.animationDuration = (6 + Math.random() * 6) + 's';
+  n.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+  bg.appendChild(n);
+}
+
+// ── Status helpers ──
+function setStatus(msg, type = '') {
+  const el  = document.getElementById('status-msg');
+  const txt = document.getElementById('status-text');
+  const sp  = document.getElementById('spinner');
+  el.className  = 'status-msg ' + type;
+  txt.textContent = msg;
+  sp.style.display = type === 'loading' ? 'block' : 'none';
+}
+
+// ── Sign in ──
+async function signIn(provider) {
+  setStatus('Connecting…', 'loading');
+  try {
+    const redirectTo = window.location.origin + window.location.pathname.replace('login.html','') + 'repertoire.html';
+    const { error } = await db.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo,
+        scopes: provider === 'apple' ? 'name email' : undefined
+      }
+    });
+    if (error) throw error;
+    setStatus('Redirecting to ' + (provider === 'google' ? 'Google' : 'Apple') + '…', 'loading');
+  } catch (err) {
+    setStatus('Sign in failed: ' + err.message, 'error');
+  }
+}
+
+// ── Sign out ──
+async function signOut() {
+  await db.auth.signOut();
+  showSignIn();
+  setStatus('Signed out successfully', 'success');
+}
+
+function goToApp() {
+  window.location.href = 'repertoire.html';
+}
+
+// ── Show panels ──
+function showSignIn() {
+  document.getElementById('signin-panel').style.display = 'block';
+  document.getElementById('user-card').style.display    = 'none';
+}
+
+function showUser(user) {
+  document.getElementById('signin-panel').style.display = 'none';
+  document.getElementById('user-card').style.display    = 'block';
+  const meta = user.user_metadata || {};
+  document.getElementById('user-name').textContent  = meta.full_name || meta.name || 'Choir Member';
+  document.getElementById('user-email').textContent = user.email || '';
+  const avatar = document.getElementById('user-avatar');
+  if (meta.avatar_url || meta.picture) {
+    avatar.src = meta.avatar_url || meta.picture;
+    avatar.style.display = 'block';
+  } else {
+    avatar.style.display = 'none';
+  }
+}
+
+// ── Check session on load ──
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await db.auth.getSession();
+  if (session && session.user) {
+    showUser(session.user);
+  } else {
+    showSignIn();
+  }
+
+  // Listen for auth changes (e.g. after OAuth redirect)
+  db.auth.onAuthStateChange((event, session) => {
+    if (session && session.user) {
+      showUser(session.user);
+    } else {
+      showSignIn();
+    }
+  });
+});
+</script>
+</body>
+</html>
