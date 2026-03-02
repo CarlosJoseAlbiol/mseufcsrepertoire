@@ -245,7 +245,7 @@ function setStatus(msg, type = '') {
 async function signIn(provider) {
   setStatus('Connecting…', 'loading');
   try {
-    const redirectTo = window.location.origin + window.location.pathname.replace('login.html','') + 'repertoire.html';
+    const redirectTo = 'https://carlosjosealbiol.github.io/mseufcsrepertoire/repertoire.html';
     const { error } = await db.auth.signInWithOAuth({
       provider,
       options: {
@@ -313,3 +313,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 </body>
 </html>
+
