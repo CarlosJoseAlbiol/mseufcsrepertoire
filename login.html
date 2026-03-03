@@ -198,7 +198,7 @@
 
     <div class="terms">
       By signing in, you agree to share your name and email<br>
-      with the MSEUF Concert Singers.
+      with the MSEUF Concert Singers repertoire tracker.
     </div>
   </div>
 
@@ -245,7 +245,7 @@ function setStatus(msg, type = '') {
 async function signIn(provider) {
   setStatus('Connecting…', 'loading');
   try {
-    const redirectTo = 'https://carlosjosealbiol.github.io/mseufcsrepertoire/repertoire.html';
+    const redirectTo = 'https://carlosjosealbiol.github.io/mseufcsrepertoire/index.html';
     const { error } = await db.auth.signInWithOAuth({
       provider,
       options: {
@@ -268,7 +268,7 @@ async function signOut() {
 }
 
 function goToApp() {
-  window.location.href = 'repertoire.html';
+  window.location.href = 'https://carlosjosealbiol.github.io/mseufcsrepertoire/index.html';
 }
 
 // ── Show panels ──
@@ -313,6 +313,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 </body>
 </html>
-
-
-
