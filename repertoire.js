@@ -331,4 +331,3 @@ async function loadUserInfo() {
 document.addEventListener("DOMContentLoaded", () => {
   loadUserInfo();
 });
-
